@@ -1,0 +1,38 @@
+<!-- index.html (Sur le PC Portable) -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Katzpit Cockpit</title>
+</head>
+<body>
+    <div>
+        <h2>Vitesse : <span id="speed">0</span> kts</h2>
+        <h2>Altitude : <span id="alt">0</span> ft</h2>
+        <h2>Régime Moteur : <span id="rpm">0</span> RPM</h2>
+        <h2>Frein de Parking : <span id="brakeState">INCONNU</span></h2>
+    </div>
+    
+    <!-- Bouton pour interagir -->
+    <button onclick="toggleParkingBrake()">DESSERRER/SERRER FREIN</button>
+
+    <script>
+        const ws = new WebSocket("ws://IP_DU_PC_DE_JEU:8080");
+
+        ws.onmessage = (event) => {
+            const msg = JSON.parse(event.data);
+            
+            if (msg.type === "TELEMETRY") {
+                document.getElementById('speed').innerText = Math.round(msg.speed);
+                document.getElementById('alt').innerText = Math.round(msg.alt);
+                document.getElementById('rpm').innerText = Math.round(msg.rpm);
+                document.getElementById('brakeState').innerText = msg.parkingBrake ? "SERRÉ" : "DESSERRÉ";
+            }
+        };
+
+        function toggleParkingBrake() {
+            // On envoie l'ordre au serveur Node.js en JSON
+            ws.send(JSON.stringify({ action: "TOGGLE_PARKING_BRAKE" }));
+        }
+    </script>
+</body>
+</html>
