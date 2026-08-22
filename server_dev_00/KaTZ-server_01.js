@@ -1,3 +1,11 @@
+// Test Serveur v01
+// Serveur de télémétrie pour MSFS 2024 utilisant node-simconnect
+// Fonctionnement Local uniquement, pas de serveur distant pour l'instant
+//
+// Affichage des données de télémétrie dans la console
+//
+// KaTZe : 2026/08/22
+
 const { open, Protocol, SimConnectDataType, SimConnectConstants, SimConnectPeriod } = require('node-simconnect');
 
 const DEFINITION_ID = 0;
